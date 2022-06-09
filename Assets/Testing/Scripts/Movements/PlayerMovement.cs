@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public GrabAsteroid grabAsteroidClass;
     public float moveSpeed;
     public float xPlayerOffset = 9f;
     public Rigidbody2D rb;
@@ -16,7 +17,9 @@ public class PlayerMovement : MonoBehaviour
     private bool isPlayerDead = false;
     [SerializeField] private Animator myAnimationController;
     public GameObject aspirateur;
+    public GameObject grab;
     private bool enterKeyPressed = false;
+    private bool grabKeyPressed = false;
 
     void Start()
     {
@@ -24,6 +27,8 @@ public class PlayerMovement : MonoBehaviour
         objectWidth = transform.GetComponent<SpriteRenderer>().bounds.extents.x; //extents = size of width / 2
         objectHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y; //extents = size of height / 2
         aspirateur.SetActive(false);
+        grab.SetActive(false);
+        grabAsteroidClass = FindObjectOfType<GrabAsteroid>();
     }
 
     // Update is called once per frame
@@ -38,6 +43,16 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             aspirateur.SetActive(false);
+        }
+        if (!isPlayerDead && grabKeyPressed)
+        {
+            grab.SetActive(true);
+            grabAsteroidClass.stopGrab = false;
+        }
+        else
+        {
+            grab.SetActive(false);
+            grabAsteroidClass.stopGrab = true;
         }
     }
 
@@ -63,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         float moveY = Input.GetAxisRaw("Vertical");
         moveDirection = new Vector2(0, moveY);
         enterKeyPressed = Input.GetKey(KeyCode.Space);
+        grabKeyPressed = Input.GetKey(KeyCode.D);
     }
 
     void Move()
@@ -88,7 +104,3 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 }
-
-//StraightMovement.Instance.Move();
-//StraightMovement.instance.initialPosition = 2, 5;
-//aspirateur.SetActive(true);

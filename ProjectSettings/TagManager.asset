@@ -8,6 +8,7 @@ TagManager:
   - PlayerBullet
   - EnemyBullet
   - ASpirateur
+  - Collectible
   layers:
   - Default
   - TransparentFX
